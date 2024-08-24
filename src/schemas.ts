@@ -8,9 +8,12 @@ const numericStringSchema = z.union([
 
 const mmYYYYToDate = z.string().transform(s => parseDate(s, 'MM/yyyy', new Date()))
 
-const dollarAmount = z.string().startsWith('$').transform(s => parseFloat(s.substring(1)))
+const dollarAmount = z.string().startsWith('$').transform(
+    s => parseFloat(s.replace(',','').substring(1))
+)
 
-const interestRate = z.string().endsWith('%').transform(s => parseFloat(s.substring(0, s.length - 1)) / 100)
+const interestRate = z.string()
+                      .transform(s => parseFloat(s.substring(0, s.length - 1)) / 100 );
 
 export const cliArgsSchema =
     z.array(z.string())
